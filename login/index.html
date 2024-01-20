@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Aeriami</title>
+    <link rel="icon" href="/images/logo.png" type="image/x-icon" />
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: space-between;
+            margin: 0;
+            background-color: black;
+            color: white; /* Set default text color for the site */
+            font-family: Arial, sans-serif; /* Set default font for the site */
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button {
+            margin: 10px;
+            color: white; /* Set button text color */
+            background-color: transparent; /* Set transparent background for the button */
+            border: 2px solid white; /* Set white border for the button */
+            padding: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.3s ease, color 0.3s ease; /* Add smooth transition */
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Add white shadow effect */
+            width: 150px; /* Set fixed width for the button */
+        }
+
+        button:hover {
+            background-color: white; /* Set background color on hover */
+            color: black; /* Set text color on hover */
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: black; /* Set background color for the footer */
+        }
+
+        footer p {
+            color: #999; /* Set footer text color */
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <p id="errorMessage" style="color: red; display: none;">Invalid username or password.</p>
+    </main>
+
+    <footer>
+        <p>&copy; Copyright Aeriami. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Your login page-specific scripts go here
+
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting (for demo purposes)
+
+            // Predefined username and password (replace with your actual values)
+            const correctUsername = 'admin';
+            const correctPassword = '2011';
+
+            // Get user input
+            const enteredUsername = document.getElementById('username').value;
+            const enteredPassword = document.getElementById('password').value;
+
+            // Check if credentials are correct
+            if (enteredUsername === correctUsername && enteredPassword === correctPassword) {
+                // Redirect to the test.html page
+                window.location.href = '/database';
+            } else {
+                // Display error message
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        });
+    </script>
+    <script>
+        // Your existing login page-specific scripts go here
+    
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting (for demo purposes)
+    
+            // Predefined username and password (replace with your actual values)
+            const correctUsername = 'admin';
+            const correctPassword = '2011';
+    
+            // Get user input
+            const enteredUsername = document.getElementById('username').value;
+            const enteredPassword = document.getElementById('password').value;
+    
+            // Check if credentials are correct
+            if (enteredUsername === correctUsername && enteredPassword === correctPassword) {
+                // Set session variable to indicate successful login
+                sessionStorage.setItem('isLoggedIn', 'true');
+    
+                // Redirect to the test.html page
+                window.location.href = '/database';
+            } else {
+                // Display error message
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

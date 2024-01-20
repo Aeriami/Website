@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Aeriami</title>
+    <link rel="icon" href="/images/logo.png" type="image/x-icon" />
+    <style>
+        body {
+            display: flex;
+            flex-direction: column; /* Set the main axis to vertical */
+            min-height: 100vh;
+            margin: 0;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px; /* Added margin for spacing */
+        }
+
+        input[type="text"],
+        textarea,
+        input[type="file"] {
+            margin: 10px;
+            padding: 10px;
+            width: 300px;
+            border: 2px solid white;
+            color: white;
+            background-color: transparent;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin: 10px;
+            color: white;
+            background-color: transparent;
+            border: 2px solid white;
+            padding: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            width: 150px;
+        }
+
+        button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: black;
+            margin-top: auto; /* Push the footer to the bottom */
+        }
+
+        footer p {
+            color: #999;
+            font-family: inherit;
+        }
+
+        .submitted-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .text-section,
+        .image-section {
+            flex: 1;
+            padding: 20px; /* Added more padding */
+            border: 2px solid white;
+            margin: 10px;
+            overflow-y: auto; /* Add scrollbar for overflow */
+        }
+
+        .image-section img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            margin-bottom: 10px; /* Add space between images */
+        }
+
+        .file-name {
+            font-weight: bold;
+            margin-bottom: 5px; /* Add space below file name */
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <div>
+            <h2>Test Page</h2>
+
+            <div>
+                <p2>Test Name:</p2>
+                <input type="text" id="testNameInput" placeholder="Enter test name">
+            </div>
+
+            <div>
+                <p2>Text Bar:</p2>
+                <textarea id="textBar" placeholder="Type your text here"></textarea>
+            </div>
+
+            <div>
+                <p2>Image Upload:</p2>
+                <input type="file" id="imageUpload" accept="image/*">
+            </div>
+
+            <button type="submit" onclick="submitTest()">Submit</button>
+        </div>
+    </main>
+
+    <main>
+        <div class="submitted-content">
+            <div class="text-section">
+                <h2>Text Submissions</h2>
+                <div id="textSubmissions"></div>
+            </div>
+
+            <div class="image-section">
+                <h2>Image Submissions</h2>
+                <div id="imageSubmissions"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; Copyright Aeriami. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function submitTest() {
+            const testNameValue = document.getElementById('testNameInput').value;
+            const textBarValue = document.getElementById('textBar').value;
+            const imageFile = document.getElementById('imageUpload').files[0];
+
+            if (textBarValue.trim() !== "") {
+                // Create element for text submission
+                const textElement = document.createElement('p');
+                textElement.textContent = textBarValue;
+
+                // Append text to the text section
+                document.getElementById('textSubmissions').appendChild(textElement);
+            }
+
+            if (imageFile) {
+                // Create elements for image submission
+                const imageContainer = document.createElement('div');
+                const fileNameElement = document.createElement('p');
+                const imageElement = document.createElement('img');
+                const downloadIcon = document.createElement('a');
+
+                fileNameElement.className = 'file-name';
+                fileNameElement.textContent = `File Name: ${imageFile.name}`;
+
+                // Set up download icon
+                downloadIcon.href = URL.createObjectURL(imageFile);
+                downloadIcon.download = imageFile.name;
+                downloadIcon.innerHTML = '<img src="/images/logo.png" alt="Download Icon" style="width: 20px; height: 20px; cursor: pointer;">';
+
+                // Display image and download icon
+                imageElement.src = URL.createObjectURL(imageFile);
+                imageContainer.appendChild(fileNameElement);
+                imageContainer.appendChild(imageElement);
+                imageContainer.appendChild(downloadIcon);
+                
+                document.getElementById('imageSubmissions').appendChild(imageContainer);
+            }
+
+            // Clear the form fields after submission (optional)
+            document.getElementById('testNameInput').value = '';
+            document.getElementById('textBar').value = '';
+            document.getElementById('imageUpload').value = '';
+        }
+    </script>
+
+</body>
+</html>
