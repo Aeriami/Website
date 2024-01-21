@@ -41,8 +41,7 @@
       font-family: inherit;
       transition: background-color 0.3s ease, color 0.3s ease;
       /* Add smooth transition */
-      box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-      /* Add white shadow effect */
+      box-shadow: rgba(255, 255, 255, 0.09) 0px 2px 1px, rgba(255, 255, 255, 0.09) 0px 4px 2px, rgba(255, 255, 255, 0.09) 0px 8px 4px, rgba(255, 255, 255, 0.09) 0px 16px 8px, rgba(255, 255, 255, 0.09) 0px 32px 16px;
       width: 150px;
       /* Set fixed width for the button */
     }
@@ -96,7 +95,8 @@
   </main>
 
   <footer>
-    <p>&copy; Copyright Aeriami. All rights reserved.</p>
+    <p>&copy; Copyright <a href="/copyright/" target="_blank" style="color:#ffffff;">Aeriami</a>. All rights reserved.
+    </p>
   </footer>
 
   <script>
@@ -108,13 +108,7 @@
       window.location.href = '/login'; // Replace with your actual login page URL
     });
   </script>
-  <!-- Place this where you want to display the timer -->
-  <div id="timer"
-    style="position: fixed; bottom: 10px; left: 10px; color: white; font-family: 'Your Custom Font', sans-serif; font-size: 14px;">
-  </div>
 
-  <!-- Include the timer.js file -->
-  <script src="timer.js"></script>
 </body>
 
 </html>
