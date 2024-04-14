@@ -245,5 +245,194 @@ root.mainloop()
             </code>
         </pre>
     </div>
+
+    <h1>Iesa's python for xml:</h1>
+        <pre class="code-block">
+            <code class="python">
+                import tkinter as tk
+                from tkinter import ttk
+                from tkinter.messagebox import showinfo
+                import xml.etree.ElementTree as ET
+                
+                
+                def show_info():
+                    info_text.config(state='normal')
+                    info_text.delete('1.0', tk.END)  # Clear previous text
+                    # Read information from XML file
+                    tree = ET.parse('Laptop.xml')
+                    root = tree.getroot()
+                
+                    # Check which laptop is selected
+                    if selected_laptop.get() == 'Value 1':
+                        laptop_index = 0
+                    elif selected_laptop.get() == 'Value 2':
+                        laptop_index = 1
+                    elif selected_laptop.get() == 'Value 3':
+                        laptop_index = 2
+                    else:
+                        return
+                
+                    # Display information for the selected laptop
+                    laptop = root[laptop_index]
+                    for child in laptop:
+                        info_text.insert(tk.END, f"- {child.tag}: {child.text}\n")
+                    info_text.config(state='disabled')
+                
+                
+                def add_to_cart():
+                    # Read information from XML file
+                    tree = ET.parse('Laptop.xml')
+                    root = tree.getroot()
+                
+                    # Check which laptop is selected
+                    if selected_laptop.get() == 'Value 1':
+                        laptop_index = 0
+                    elif selected_laptop.get() == 'Value 2':
+                        laptop_index = 1
+                    elif selected_laptop.get() == 'Value 3':
+                        laptop_index = 2
+                    else:
+                        return
+                
+                    # Get laptop information
+                    laptop = root[laptop_index]
+                    name = laptop.find('Name').text
+                    price = float(laptop.find('Price').text.split('$')[1])  # Adjusted to handle space before price
+                
+                    # Add laptop information to cart
+                    cart_listbox.insert(tk.END, f"{name}: ${price:.2f}")  # Format price with two decimal places
+                
+                    # Update total cost
+                    update_total_price()
+                
+                
+                def update_total_price():
+                    total_price_entry.config(state='normal')  # Enable the entry
+                    total_price_entry.delete(0, tk.END)  # Clear previous value
+                
+                    total = sum(float(item.split(':')[1].strip().strip('$')) for item in cart_listbox.get(0, tk.END))
+                    total_price_entry.insert(tk.END, f"${total:.2f}")  # Insert the total price
+                    total_price_entry.config(state='readonly')  # Make the entry read-only again
+                
+                
+                def open_cart():
+                    cart_window = tk.Toplevel(window)
+                    cart_window.title("Cart")
+                
+                    # Label for cart items
+                    cart_items_label = tk.Label(cart_window, text="The following items are currently in your cart:")
+                    cart_items_label.pack(padx=10, pady=10)
+                
+                    global cart_listbox
+                    cart_listbox = tk.Listbox(cart_window)
+                    cart_listbox.pack(fill=tk.BOTH, expand=True, padx=8, pady=(0, 10))
+                
+                    # Close Cart button
+                    close_cart_button = ttk.Button(cart_window, text="Close Cart", command=cart_window.destroy)
+                    close_cart_button.pack(side=tk.BOTTOM, padx=10, pady=10)
+                
+                    # Total text
+                    total_text_label = tk.Label(cart_window, text="Total: ")
+                    total_text_label.pack(side=tk.LEFT, padx=10, pady=(0, 5))
+                
+                    # Total price entry
+                    global total_price_entry
+                    total_price_entry = tk.Entry(cart_window, width=10, state='readonly')
+                    total_price_entry.pack(side=tk.LEFT, padx=10, pady=(0, 5))
+                
+                
+                window = tk.Tk()
+                window.title("Recommended BYOD Laptops")
+                
+                frame = tk.Frame(window)
+                frame.pack(fill=tk.BOTH, expand=True)
+                
+                # Saving User Info
+                user_info_frame = tk.LabelFrame(frame, text="Please start by entering your name and form class.")
+                user_info_frame.pack(fill=tk.BOTH, padx=20, pady=20)
+                
+                name_label = tk.Label(user_info_frame, text="Name:")
+                name_label.grid(row=1, column=0)
+                phone_label = tk.Label(user_info_frame, text="Phone:")
+                phone_label.grid(row=1, column=2)
+                class_lable = tk.Label(user_info_frame, text="Form Class:")
+                class_lable.grid(row=2, column=0)
+                email_lable = tk.Label(user_info_frame, text="Email:")
+                email_lable.grid(row=2, column=2)
+                
+                name_entry = tk.Entry(user_info_frame)
+                phone_entry = tk.Entry(user_info_frame)
+                class_entry = tk.Entry(user_info_frame)
+                email_entry = tk.Entry(user_info_frame)
+                name_entry.grid(row=1, column=1)
+                phone_entry.grid(row=1, column=3)
+                class_entry.grid(row=2, column=1)
+                email_entry.grid(row=2, column=3)
+                
+                selected_laptop = tk.StringVar()
+                laptop_label = tk.Label(user_info_frame, text="Which Computer are you Interested in?")
+                laptop_label.grid(row=3, column=0)
+                
+                laptop1_check = ttk.Radiobutton(user_info_frame, text="Lenovo ThinkPad 11e 5th Gen", value='Value 1',
+                                                variable=selected_laptop)
+                laptop2_check = ttk.Radiobutton(user_info_frame, text="Apple MacBook Air 13'            ", value='Value 2',
+                                                variable=selected_laptop)
+                laptop3_check = ttk.Radiobutton(user_info_frame, text="Asus Zephyrus G1414     ", value='Value 3',
+                                                variable=selected_laptop)
+                laptop1_check.grid(row=4, column=0, sticky="w")
+                laptop2_check.grid(row=5, column=0, sticky="w")
+                laptop3_check.grid(row=6, column=0, sticky="w")
+                
+                info_button = ttk.Button(user_info_frame, text="See Information", command=show_info)
+                info_button.grid(row=7, column=0, pady=5)
+                
+                info_text = tk.Text(user_info_frame, height=10, width=45, state='disabled')
+                info_text.grid(row=8, column=0, columnspan=5)
+                
+                # Button Frame
+                button_frame = tk.Frame(frame)
+                button_frame.pack(fill=tk.BOTH, padx=20, pady=10)
+                
+                add_to_cart_button = ttk.Button(button_frame, text="Add to Cart", command=add_to_cart)
+                add_to_cart_button.pack(side=tk.LEFT, padx=10)
+                
+                go_to_cart_button = ttk.Button(button_frame, text="Go to Cart", command=open_cart)
+                go_to_cart_button.pack(side=tk.LEFT, padx=5)
+                
+                window.mainloop()
+            </code>
+        </pre>
+    </div>
+
+
+    <h1>Iesa's python for xml:</h1>
+        <pre class="code-block">
+            <code class="XML">
+                <data date="2024-04-01">
+                    <Laptop>
+                       <Name>Lenovo ThinkPad 11e 5th Gen</Name>
+                       <Processor>N4120 processor</Processor>
+                       <Storage>128GB</Storage>
+                       <Memory>4GB</Memory>
+                       <Price>$571.45</Price>
+                    </Laptop>
+                    <Laptop>
+                       <Name>Apple MacBookAir 13" -Silver</Name>
+                       <Processor>A11 8-Core</Processor>
+                       <Storage>256GB</Storage>
+                       <Memory>8GB</Memory>
+                       <Price>$1347.72</Price>
+                    </Laptop>
+                    <Laptop>
+                       <Name>Asus Zephyrus G1414" Full HD 144Hz</Name>
+                       <Processor>AMD Ryzen 9</Processor>
+                       <Storage>512GB</Storage>
+                       <Memory>12GB</Memory>
+                       <Price>$2798.00</Price>
+                    </Laptop>
+                    </data>
+            </code>
+        </pre>
+    </div>
 </body>
 </html>
